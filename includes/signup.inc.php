@@ -1,6 +1,6 @@
 <?php
 $action = $_POST["action"];
-if($_SERVER["REQUEST_METHOD"] === "POST" && $action="signup") {
+if($_SERVER["REQUEST_METHOD"] === "POST" && $action === "signup") {
     // collecting data
     $username = htmlspecialchars($_POST["username"]);
     $email = htmlspecialchars($_POST["email"]);
@@ -23,7 +23,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && $action="signup") {
     $option = [
         'cost' => 12,
     ];
-    $hashpassword = password_hash($password, PASSWORD_BCRYPT, $cost);
+
+    $hashpassword = password_hash($password, PASSWORD_BCRYPT, $option);
 
 
     // if the email alreaddy exist or not 
@@ -38,19 +39,19 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && $action="signup") {
         $smts->execute();
 
         // fetching the count 
-        $count = $stmt->fetchColumn();
+        $count = $smts->fetchColumn();
 
 
 
         // now operation
         if($count > 0) {
-            header("Location: ../signup.php?Error=AlreadyExists&&".$username."&&".$email);
+            header("Location: ../signup.php?Error=AlreadyExists&&".$username."&".$email);
             exit();
         }
 
 
         // insert new user into database
-        $insertQuery = "INSERT INTO users(username, email, pwd) VALUES (:username, :email, :hashpassword);";
+        $insertQuery = "INSERT INTO users(username, email, pwd) VALUES (:username, :email, :pwd);";
         $smts = $pdo->prepare($insertQuery);
         $smts->bindParam(":username", $username);
         $smts->bindParam(":email", $email);
