@@ -12,7 +12,9 @@
     <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
     
     <!-- Login Form -->
-    <form action="#" method="POST">
+    <form action="./includes/login.inc.php" method="POST">
+      <!-- hidden input -->
+       <input type="hidden" name="action" value="login">
       <!-- Email -->
       <div class="mb-4">
         <label for="email" class="block text-sm font-semibold text-gray-700">Email</label>

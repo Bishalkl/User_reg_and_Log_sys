@@ -7,6 +7,12 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && $action === "signup") {
     $password = htmlspecialchars($_POST["password"]);
     $verifypassword = htmlspecialchars($_POST["confirm-password"]);
 
+    // check valid input
+    if(empty($username) || empty($email) || empty($password) || empty($verifypassword)) {
+        header("Location: ../signup.php?Error=InvalidInput");
+        exit();
+    }
+
     // vaild email
     if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         header("Location: ../signup.php?Error=InvalidEmail&&".$username);
@@ -73,3 +79,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && $action === "signup") {
     header("Location: ../index.php?Error=InvalidServer");
     exit();
 }
+
+
+// Bishal123
+// Bishal1212
+// Bishalkoirala869@gmail.com
