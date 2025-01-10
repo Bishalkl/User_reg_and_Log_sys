@@ -15,7 +15,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && $action === "signup") {
 
     // vaild email
     if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        header("Location: ../signup.php?Error=InvalidEmail&&".$username);
+        header("Location: ../signup.php?Error=InvalidEmail&username=".$username);
         exit();
     }
 
@@ -25,20 +25,18 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && $action === "signup") {
         exit();
     }
 
-    // check the passworda and verifypassword is same or not
-    $option = [
-        'cost' => 12,
-    ];
-
+    // hashing password
+    $option = ['cost' => 12,];
     $hashpassword = password_hash($password, PASSWORD_BCRYPT, $option);
 
 
     // if the email alreaddy exist or not 
     try {
+        require "email.inc.php";
         require_once "dbh.inc.php";
 
         // Check if the username or email already exists
-        $checkQuery = "SELECT COUNT(*) FROM users WHERE username=:username AND email=:email;";
+        $checkQuery = "SELECT COUNT(*) FROM users WHERE username=:username OR email=:email;";
         $smts = $pdo->prepare($checkQuery);
         $smts->bindParam(":username", $username);
         $smts->bindParam(":email", $email);
@@ -49,9 +47,9 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && $action === "signup") {
 
 
 
-        // now operation
+        // If the user already exists
         if($count > 0) {
-            header("Location: ../signup.php?Error=AlreadyExists&&".$username."&".$email);
+            header("Location: ../signup.php?Error=AlreadyExists&".$username."&".$email);
             exit();
         }
 
@@ -68,6 +66,11 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && $action === "signup") {
         $pdo = null;
         $smts = null;
 
+
+        // sending email
+        $emailSending = new Email($email);
+        $emailSending->emailSend();
+
         //Redirect to login page after successfull registration
         header("Location: ../login.php");
         
@@ -79,8 +82,3 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && $action === "signup") {
     header("Location: ../index.php?Error=InvalidServer");
     exit();
 }
-
-
-// Bishal123
-// Bishal1212
-// Bishalkoirala869@gmail.com

@@ -3,16 +3,12 @@
 // create class for email
 class Email {
     // Properties
-    private $username;
     private $email;
-    private $message;
 
     // constructor
-    public function __construct($username, $email, $message)
+    public function __construct( $email)
     {  
-        $this->username = $username;
         $this->email = $email;
-        $this->message = $message; 
     }
 
     // method for send email
