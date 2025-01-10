@@ -40,6 +40,7 @@
         <input type="password" id="confirm-password" name="confirm-password" required class="w-full mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
       </div>
       
+      
       <!-- Submit Button -->
       <div class="mb-4">
         <button type="submit" class="w-full py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400">Register</button>
